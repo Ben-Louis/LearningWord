@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import argparse
+import random
 LOCAL = os.path.abspath(__file__).rsplit(os.sep,1)[0]
 
 def str2bool(s):
@@ -91,7 +92,24 @@ def remove(word, data):
     print('Remove \'%s\' successfully!'%word)
 
 def review(num, data):
-    raise NotImplementedError
+
+    num = min(num, len(data))
+    print('Reviewing %d words...'%num, end='\n\n')
+
+    keys = list(data.keys())
+    random.shuffle(keys)
+
+    for key in keys[:num]:
+        word_dict = data[key]
+
+        print(word_dict['word'])
+        for i,exp in enumerate(word_dict['exps']):
+            print(str(i+1)+' | ', end='')
+            print(exp[0],'. ',exp[1],'; ',exp[2])
+
+        input()
+
+
 
 def test(num, data):
     raise NotImplementedError
