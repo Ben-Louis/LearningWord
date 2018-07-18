@@ -54,15 +54,12 @@ def add(word, data):
         word_dict['exps'].append([tp, expl, emp])
 
         nxt=input('next?[Y/N]').lower()
-        while nxt in ('y', 'n'):
-            mode = 'continue'
-            if nxt.lower() == 'n':
-                mode = 'break'
-                break
+        while not (nxt in ('y', 'n')):
             nxt=input('next?[Y/N]').lower()
-
-        if mode == 'break':
+        mode = 'continue'
+        if nxt.lower() == 'n':
             break
+
         i += 1
 
     data[word] = word_dict
