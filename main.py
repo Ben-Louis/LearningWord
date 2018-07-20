@@ -39,12 +39,13 @@ def main():
     if config.test > 0:
         test(config.test, data)
 
+
 def add(word, data):
     if word in data.keys():
-        print('This word in already in the pool')
+        print('This word is already in the pool')
         return 
 
-    word_dict = {'word': word, 'exps':[]}
+    word_dict = {'word': word, 'exps':[], 'test':[0,0]}
     i = 1
     while True:
         print('=== Explain %d ==='%i)
@@ -54,9 +55,14 @@ def add(word, data):
         word_dict['exps'].append([tp, expl, emp])
 
         nxt=input('next?[Y/N]').lower()
-        while not (nxt in ('y', 'n')):
+        while not (nxt in ('y', 'n', 'q')):
+            # extra question
+            if nex == 'q':
+                que = input('Question: ')
+                ans = input('Answer: ')
+                word_dict['question'] = [que, ans]
+
             nxt=input('next?[Y/N]').lower()
-        mode = 'continue'
         if nxt.lower() == 'n':
             break
 
@@ -66,11 +72,12 @@ def add(word, data):
     dump(word_dict)
 
 
-def dump(word_dict):
+def dump(word_dict, show=True):
     fname = os.path.join(LOCAL, 'data', word_dict['word']+'.json')
     with open(fname, 'w') as f:
         json.dump(word_dict, f)
-    print('Save \'%s\' successfully!'%word_dict['word'])
+    if show:
+        print('Save \'%s\' successfully!'%word_dict['word'])
 
 def load_data():
     words = os.listdir(os.path.join(LOCAL, 'data'))
@@ -109,7 +116,73 @@ def review(num, data):
 
 
 def test(num, data):
-    raise NotImplementedError
+
+    # prepare test data
+    hard, med, easy = [], [], []
+
+    for word, word_dict in data.items():
+        r, w = word_dict['test']
+        if r+w == 0 or r/(w+1) < 0.8:
+            hard.append(word_dict)
+        elif r/(w+1) > 1.5:
+            easy.append(word_dict)
+        else:
+            med.append(word_dict)
+
+    ne = min(int(num*0.1), len(easy))
+    nm = min(int(num*0.3), len(med))
+    nh = num - nm - ne
+
+    test_words = []
+    test_words += choice(hard, size=nh)
+    test_words += choice(med, size=nm)
+    test_words += choice(easy, size=ne)
+
+
+    # test 
+    random.shuffle(test_words)
+    for word_dict in test_words:
+
+        # test process
+        print()
+        print(word_dict['word']+'  (%d/%d)'%(word_dict['test'][0], word_dict['test'][1]))
+        known = input('knowm?[Y/N]').lower()
+        while not (known in ['y', 'n']):
+            known = input('knowm?[Y/N]').lower()
+
+        if known == 'y':
+
+            queans = word_dict.get('question', None) 
+            if queans:
+                q, a = queans
+                print('Question: ',q)
+                ans = input('Answer: ')
+
+                if ans != a:
+                    known = 'n'
+
+        if known == 'y':
+            word_dict['test'][0] += 1
+            dump(word_dict, False)  
+
+        if known == 'n':
+            for i,exp in enumerate(word_dict['exps']):
+                print(str(i+1)+' | ', end='')
+                print(exp[0],'. ',exp[1],'; ',exp[2])  
+            print(word_dict.get('question',None)) 
+            word_dict['test'][1] += 1
+            dump(word_dict, False)
+
+    print()
+
+def choice(seq, size=1):
+    idxs = list(range(len(seq)))
+    random.shuffle(idxs)
+    res = []
+    for i in range(size):
+        res.append(seq[idxs[i]])
+    return res
+
 
 
 if __name__ == '__main__':
