@@ -55,7 +55,7 @@ def add(word, data):
         word_dict['exps'].append([tp, expl, emp])
 
         nxt=input('next?[Y/N]').lower()
-        while not (nxt in ('y', 'n', 'q')):
+        while not (nxt in ('', 'y', 'n', 'q')):
             # extra question
             if nex == 'q':
                 que = input('Question: ')
@@ -63,7 +63,7 @@ def add(word, data):
                 word_dict['question'] = [que, ans]
 
             nxt=input('next?[Y/N]').lower()
-        if nxt.lower() == 'n':
+        if nxt.lower() in ['','n']:
             break
 
         i += 1
@@ -146,9 +146,9 @@ def test(num, data):
         # test process
         print()
         print(word_dict['word']+'  (%d/%d)'%(word_dict['test'][0], word_dict['test'][1]))
-        known = input('knowm?[Y/N]').lower()
+        known = input('known?[Y/N]').lower()
         while not (known in ['y', 'n']):
-            known = input('knowm?[Y/N]').lower()
+            known = input('known?[Y/N]').lower()
 
         if known == 'y':
 
