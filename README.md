@@ -8,8 +8,9 @@
 
 - review
 
-  to do
+  `python3 main.py --review 10`
 
 - test
 
-  to do
+  `python3 main.py --test 10`
+
