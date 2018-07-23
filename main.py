@@ -17,6 +17,7 @@ def get_parameter():
     parser.add_argument('--readd', type=str, default='')
     parser.add_argument('--review', type=int, default=-1)
     parser.add_argument('--test', type=int, default=-1)
+    parser.add_argument('--update', type=str, default='')
 
     config = parser.parse_args()
     return config
@@ -38,6 +39,9 @@ def main():
 
     if config.test > 0:
         test(config.test, data)
+
+    if len(config.update) > 0:
+        update(config.update)
 
 
 def add(word, data):
@@ -182,6 +186,15 @@ def choice(seq, size=1):
     for i in range(size):
         res.append(seq[idxs[i]])
     return res
+
+
+def update(commit):
+    os.chdir(LOCAL)
+    os.system('git add main.py')
+    os.system('git add data')
+    os.system('git commit -m %s'%commit)
+    os.system('git push origin master')
+
 
 
 
