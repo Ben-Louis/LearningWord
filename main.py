@@ -145,9 +145,9 @@ def test(num, data):
     #test_words += choice(hard, size=nh)
     #test_words += choice(med, size=nm)
     #test_words += choice(easy, size=ne)
-    test_words += hard[:nh]
-    test_words += med[:nm]
-    test_words += easy[:ne]
+    test_words += choice(hard[:nh*3], size=nh)
+    test_words += choice(med[:nm*2], size=nm)
+    test_words += choice(easy[:ne*2], size=ne)
 
     # test 
     random.shuffle(test_words)
