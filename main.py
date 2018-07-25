@@ -137,11 +137,17 @@ def test(num, data):
     nm = min(int(num*0.2), len(med))
     nh = num - nm - ne
 
+    hard.sort(key=lambda x:sum(x['test']))
+    med.sort(key=lambda x:sum(x['test']))
+    easy.sort(key=lambda x:sum(x['test']))
+    
     test_words = []
-    test_words += choice(hard, size=nh)
-    test_words += choice(med, size=nm)
-    test_words += choice(easy, size=ne)
-
+    #test_words += choice(hard, size=nh)
+    #test_words += choice(med, size=nm)
+    #test_words += choice(easy, size=ne)
+    test_words += hard[:nh]
+    test_words += med[:nm]
+    test_words += easy[:ne]
 
     # test 
     random.shuffle(test_words)
