@@ -133,8 +133,8 @@ def test(num, data):
         else:
             med.append(word_dict)
 
-    ne = min(int(num*0.1), len(easy))
-    nm = min(int(num*0.3), len(med))
+    ne = min(int(num*0.05), len(easy))
+    nm = min(int(num*0.2), len(med))
     nh = num - nm - ne
 
     test_words = []
