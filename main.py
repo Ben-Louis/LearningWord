@@ -137,9 +137,9 @@ def test(num, data):
     nm = min(int(num*0.2), len(med))
     nh = num - nm - ne
 
-    hard.sort(key=lambda x:sum(x['test']))
-    med.sort(key=lambda x:sum(x['test']))
-    easy.sort(key=lambda x:sum(x['test']))
+    hard.sort(key=lambda x:x['test'][0])
+    med.sort(key=lambda x:x['test'][0])
+    easy.sort(key=lambda x:x['test'][0])
     
     test_words = []
     #test_words += choice(hard, size=nh)
